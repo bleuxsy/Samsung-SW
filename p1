@@ -1,0 +1,123 @@
+package sw_samsung;
+import java.io.BufferedReader;
+import java.util.Scanner;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
+import java.util.LinkedList;
+import java.util.Queue;
+
+class p1 {
+	
+	/*int MAX = 1000;
+    int front;    
+    int rear;    
+    static int [] queue;
+    public p1() {
+        front = rear = 0;    
+        queue = new int[MAX]; 
+    }
+    public boolean queueisEmpty() { 
+        return front == rear;
+    }
+    public boolean queueisFull() {    
+        if(rear == MAX-1) {
+            return true;
+        }else 
+            return false;
+    }
+    public int size() { 
+        return front-rear;
+    }
+    public void push(int value) {
+        if(queueisFull()) {
+            System.out.println("Queue is Full");
+            return;
+        }
+        queue[rear++] = value; 
+    }
+    public int pop() {
+        if(queueisEmpty()) {
+            System.out.println("Queue is Empty");
+            return -1;
+        }
+        int popValue = queue[front++];
+        return popValue;
+    }
+    */
+	
+	
+	static int R, C;
+	static boolean[] visit = new boolean[26];
+	static int[][] map;
+	
+	static int[] Xx = { -1, 1, 0, 0 };
+	static int[] Yy = { 0, 0, -1, 1 };
+	static int result = 0;
+
+	public static void dfs(int x, int y, int count) {
+		if (visit[map[x][y]]) { 
+			result = Math.max(result, count);
+		} else {
+			visit[map[x][y]] = true;
+			for (int i = 0; i < 4; i++) {
+				int dx = x + Xx[i];
+				int dy = y + Yy[i];
+
+				if (dx >= 0 && dy >= 0 && dx < R && dy < C) {
+					dfs(dx, dy, count + 1);
+				}
+
+			}
+
+			visit[map[x][y]] = false;
+
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
+		Scanner sc = new Scanner(System.in);
+		
+		int T = sc.nextInt();
+		
+		Queue<Integer> queue = new LinkedList<Integer>();
+		//int[] testarr;
+		//testarr = new int[T];
+		
+		
+		for(int test_case =0  ; test_case < T; test_case++)
+		{
+			BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+			StringTokenizer st = new StringTokenizer(bf.readLine());
+			
+			R = Integer.parseInt(st.nextToken());
+			C = Integer.parseInt(st.nextToken());
+			map = new int[R][C];
+			
+			if(R!=0) {
+			for (int i = 0; i < R; i++) {
+				String str = bf.readLine();
+				for (int j = 0; j < C; j++) {
+					map[i][j] = str.charAt(j) - 'A';
+				}
+			}}
+	
+			dfs(0, 0, 0);
+			queue.offer(result);
+			//testarr[test_case] = result;
+		
+		}
+		sc.close();
+		
+		while(!queue.isEmpty()) {
+		for(int test_case=1; test_case<=T;test_case++) {
+			
+			System.out.print("#"+test_case+"  ");
+			System.out.println(queue.poll());
+			//System.out.println(testarr[test_case-1]);
+			
+		}
+		}
+		queue.clear();
+	}
+}
